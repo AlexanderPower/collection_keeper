@@ -9,8 +9,7 @@
 
 *.rbc
 capybara-*.html
-#.rspec
-/log
+
 /public/system
 /coverage
 /spec/tmp
