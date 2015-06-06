@@ -1,0 +1,21 @@
+default: &default
+  adapter: postgresql
+  encoding: unicode
+  pool: 5
+  username: collection_keeper_user
+  password: 123
+
+development:
+  <<: *default
+  database: collection_keeper_development
+
+
+test:
+  <<: *default
+  database: collection_keeper_test
+
+production:
+  <<: *default
+  database: collection_keeper_production
+  username: collection_keeper_user
+  password: <%= ENV['WEBLOG_DATABASE_PASSWORD'] %>
