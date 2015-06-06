@@ -1,7 +1,7 @@
 = nav_bar inverse: true, brand: 'CollectionKeeper', responsive: true do
   = menu_group do
     - if user_signed_in?
-      =menu_item 'My collections', feed_path
+      =menu_item 'My collections', collections_path
   = menu_group pull: :right do
     - if user_signed_in?
       = menu_item t('.edit_profile'), edit_user_registration_path
