@@ -1,0 +1,11 @@
+= nav_bar inverse: true, brand: 'CollectionKeeper', responsive: true do
+  = menu_group do
+    - if user_signed_in?
+      =menu_item 'My collections', feed_path
+  = menu_group pull: :right do
+    - if user_signed_in?
+      = menu_item t('.edit_profile'), edit_user_registration_path
+      = menu_item t('.log_out'), destroy_user_session_path, method: :delete
+    - else
+      = menu_item t('.register'), new_user_registration_path
+      = menu_item t('.login'), new_user_session_path
