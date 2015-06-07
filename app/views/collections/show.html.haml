@@ -40,6 +40,14 @@
 = link_to 'New link', new_link_path(collection_id:@collection), :class => 'btn btn-primary'
 %br
 
+-#= simple_form_for @picture, url: pictures_path do |form|
+-#  = form.input :avatar, as: :file
+-@collection.pictures.each do |picture|
+  =image_tag picture.image.url(:medium)
+
+= link_to 'New picture', new_picture_path(collection_id:@collection), :class => 'btn btn-primary'
+%br
+
 
 = link_to t('.back', :default => t("helpers.links.back")), collections_path, :class => 'btn btn-default'
 = link_to t('.edit', :default => t("helpers.links.edit")), edit_collection_path(@collection), :class => 'btn btn-default'

@@ -1,6 +1,7 @@
 Rails.application.routes.draw do
   resources :links
   resources :collections
+  resources :pictures
   devise_for :users
   root 'collections#index'
   # The priority is based upon order of creation: first created -> highest priority.
