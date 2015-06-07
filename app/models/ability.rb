@@ -4,6 +4,7 @@ class Ability
   def initialize(user)
     unless user # guest user (not logged in)
       can :read, Collection, share: true
+      return
     end
     can :create,[Collection,Link,Picture]
     can :manage, Collection, user_id: user.id
