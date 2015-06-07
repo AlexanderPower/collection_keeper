@@ -1,6 +1,6 @@
 class CollectionsController < ApplicationController
   before_action :set_collection, only: [:show, :edit, :update, :destroy]
-  before_action :authenticate_user!, except: [:index,:show]
+  before_action :authenticate_user!, except: [:index, :show]
 
   load_and_authorize_resource
 
@@ -18,6 +18,7 @@ class CollectionsController < ApplicationController
   # GET /collections/1.json
   def show
     authenticate_user! unless @collection.share
+    @show_modal=flash[:show_modal]
   end
 
   # GET /collections/new
@@ -49,8 +50,16 @@ class CollectionsController < ApplicationController
   # PATCH/PUT /collections/1.json
   def update
     respond_to do |format|
+      notice='Collection was successfully updated.'
+      if collection_params[:share]=='true'
+        notice ='Collection was successfully shared.'
+        flash[:show_modal]=true
+      elsif collection_params[:share]=='false'
+        notice ='Collection was successfully unshared.'
+      end
+
       if @collection.update(collection_params)
-        format.html { redirect_to @collection, notice: 'Collection was successfully updated.' }
+        format.html { redirect_to @collection, notice: notice }
         format.json { render :show, status: :ok, location: @collection }
       else
         format.html { render :edit }
@@ -70,13 +79,13 @@ class CollectionsController < ApplicationController
   end
 
   private
-    # Use callbacks to share common setup or constraints between actions.
-    def set_collection
-      @collection = Collection.find(params[:id])
-    end
+  # Use callbacks to share common setup or constraints between actions.
+  def set_collection
+    @collection = Collection.find(params[:id])
+  end
 
-    # Never trust parameters from the scary internet, only allow the white list through.
-    def collection_params
-      params.require(:collection).permit(:name, :user_id, :share)
-    end
+  # Never trust parameters from the scary internet, only allow the white list through.
+  def collection_params
+    params.require(:collection).permit(:name, :user_id, :share)
+  end
 end

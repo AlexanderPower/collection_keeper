@@ -21,7 +21,7 @@ gem 'sdoc', '~> 0.4.0', group: :doc
 # Front-end
 gem 'uglifier', '>= 1.3.0'
 gem 'less-rails'
-gem 'twitter-bootstrap-rails'
+gem 'twitter-bootstrap-rails', :git => 'git://github.com/seyhunak/twitter-bootstrap-rails.git'
 gem 'coffee-rails', '~> 4.1.0'
 gem 'jquery-rails'
 gem 'turbolinks'

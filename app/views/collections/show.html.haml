@@ -7,6 +7,14 @@
 -else
   =link_to 'Unshared',collection_path(@collection,collection:{share:false}),method: :patch, class: 'btn btn-default pull-right'
 
+-if @show_modal
+  #temp_information{data: {show_modal: 'true'}}
+= content_tag :a, "Modal", href: "#modal", class: 'btn',style: 'display:none;',id: 'show-modal', data: {toggle: 'modal'}
+= modal_dialog id: "modal",
+  header:{ show_close: true, dismiss: 'modal', title: 'Shared url' },
+  body:{ content: request.original_url },
+  footer: {  }
+
 %p
   %strong= model_class.human_attribute_name(:name) + ':'
   = @collection.name
