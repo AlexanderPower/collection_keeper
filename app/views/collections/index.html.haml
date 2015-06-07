@@ -1,13 +1,7 @@
 - model_class = Collection
 .page-header
   %h1=t '.title', :default => model_class.model_name.human.pluralize.titleize
--if not user_signed_in?
-  For using this service you must
-  =link_to 'register', new_user_registration_path
-  or
-  =link_to 'log-in', new_user_session_path
-  first.
-  -#-return
+
 %table.table.table-striped
   %thead
     %tr

@@ -1,10 +1,15 @@
 class CollectionsController < ApplicationController
   before_action :set_collection, only: [:show, :edit, :update, :destroy]
+  before_action :authenticate_user!
 
   # GET /collections
   # GET /collections.json
   def index
-    @collections = Collection.all
+    if not user_signed_in?
+      render 'pages/welcome'
+      return
+    end
+    @collections = current_user.collections
   end
 
   # GET /collections/1
@@ -14,7 +19,7 @@ class CollectionsController < ApplicationController
 
   # GET /collections/new
   def new
-    @collection = Collection.new
+    @collection = current_user.collections.build
   end
 
   # GET /collections/1/edit
