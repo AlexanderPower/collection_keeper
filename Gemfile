@@ -32,6 +32,9 @@ gem 'jquery-turbolinks'
 #gem 'best_in_place', '~> 3.0.1'
 #gem 'tinymce-rails', '~> 4.1.6'
 
+# Files upload
+gem 'paperclip', '~> 4.2'
+
 group :development do
   gem 'erb2haml'
 end
