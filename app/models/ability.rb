@@ -4,6 +4,7 @@ class Ability
   def initialize(user)
     user ||= User.new # guest user (not logged in)
     can :manage, Collection, user_id: user.id
+    can :read, Collection, share: true
     can :manage, Link do |link|
         user.collections.pluck(:id).include? link.collection_id
       end

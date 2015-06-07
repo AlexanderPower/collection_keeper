@@ -2,6 +2,11 @@
 .page-header
   %h1=t '.title', :default => model_class.model_name.human.titleize
 
+-if not @collection.share
+  =link_to 'Shared',collection_path(@collection,collection:{share:true}),method: :patch, class: 'btn btn-primary pull-right'
+-else
+  =link_to 'Unshared',collection_path(@collection,collection:{share:false}),method: :patch, class: 'btn btn-default pull-right'
+
 %p
   %strong= model_class.human_attribute_name(:name) + ':'
   = @collection.name

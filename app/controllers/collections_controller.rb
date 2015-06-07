@@ -1,13 +1,13 @@
 class CollectionsController < ApplicationController
   before_action :set_collection, only: [:show, :edit, :update, :destroy]
-  before_action :authenticate_user!, except: :index
+  before_action :authenticate_user!, except: [:index,:show]
 
   load_and_authorize_resource
 
   # GET /collections
   # GET /collections.json
   def index
-    if not user_signed_in?
+    unless user_signed_in?
       render 'pages/welcome'
       return
     end
@@ -17,6 +17,7 @@ class CollectionsController < ApplicationController
   # GET /collections/1
   # GET /collections/1.json
   def show
+    authenticate_user! unless @collection.share
   end
 
   # GET /collections/new
@@ -76,6 +77,6 @@ class CollectionsController < ApplicationController
 
     # Never trust parameters from the scary internet, only allow the white list through.
     def collection_params
-      params.require(:collection).permit(:name, :user_id)
+      params.require(:collection).permit(:name, :user_id, :share)
     end
 end
