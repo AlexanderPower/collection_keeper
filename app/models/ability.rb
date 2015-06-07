@@ -2,10 +2,12 @@ class Ability
   include CanCan::Ability
 
   def initialize(user)
-    user ||= User.new # guest user (not logged in)
+    unless user # guest user (not logged in)
+      can :read, Collection, share: true
+    end
+    can :create,[Collection,Link,Picture]
     can :manage, Collection, user_id: user.id
-    can :read, Collection, share: true
-    can :manage, Link do |link|
+    can :manage, [Link, Picture] do |link|
         user.collections.pluck(:id).include? link.collection_id
       end
     # Define abilities for the passed in user here. For example:

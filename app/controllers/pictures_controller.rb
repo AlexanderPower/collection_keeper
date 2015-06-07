@@ -14,7 +14,8 @@ class PicturesController < ApplicationController
 
   # GET /pictures/new
   def new
-    @picture = Picture.new
+    collection=Collection.find params[:collection_id]
+    @picture = collection.pictures.build
   end
 
   # GET /pictures/1/edit
