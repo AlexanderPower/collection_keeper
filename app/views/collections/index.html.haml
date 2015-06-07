@@ -14,7 +14,7 @@
     - @collections.each do |collection|
       %tr
         %td= link_to collection.id, collection_path(collection)
-        %td= collection.name
+        %td= link_to collection.name, collection_path(collection)
         %td= collection.user_id
         %td=l collection.created_at
         %td

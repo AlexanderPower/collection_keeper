@@ -3,6 +3,9 @@ class Ability
 
   def initialize(user)
     can :manage, Collection, user_id: user.id
+    can :manage, Link do |link|
+        user.collections.pluck(:id).include? link.collection_id
+      end
     # Define abilities for the passed in user here. For example:
     #
     #   user ||= User.new # guest user (not logged in)

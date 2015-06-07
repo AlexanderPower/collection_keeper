@@ -1,6 +1,10 @@
 class LinksController < ApplicationController
   before_action :set_link, only: [:show, :edit, :update, :destroy]
 
+  before_action :authenticate_user!
+
+  load_and_authorize_resource
+
   # GET /links
   # GET /links.json
   def index
@@ -14,7 +18,8 @@ class LinksController < ApplicationController
 
   # GET /links/new
   def new
-    @link = Link.new
+    collection=Collection.find params[:collection_id]
+    @link = collection.links.build
   end
 
   # GET /links/1/edit
