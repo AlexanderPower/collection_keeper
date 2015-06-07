@@ -1,1 +1,1 @@
-https://collectionkeeper.herokuapp.com/
+https://collectionkeeper.herokuapp.com
