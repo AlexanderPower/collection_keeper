@@ -1,0 +1,9 @@
+= simple_form_for(@link) do |f|
+  = f.error_notification
+
+  .form-inputs
+    = f.input :text
+    = f.association :collection
+
+  .form-actions
+    = f.button :submit
