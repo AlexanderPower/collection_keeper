@@ -2,6 +2,7 @@ class Ability
   include CanCan::Ability
 
   def initialize(user)
+    user ||= User.new # guest user (not logged in)
     can :manage, Collection, user_id: user.id
     can :manage, Link do |link|
         user.collections.pluck(:id).include? link.collection_id
