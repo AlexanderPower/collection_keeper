@@ -2,9 +2,10 @@
   = f.error_notification
 
   .form-inputs
-    = f.input :name
+    -#= f.input :name
     = f.input :image, as: :file
-    = f.association :collection
+    = f.hidden_field :collection_id
 
   .form-actions
-    = f.button :submit
+    = f.button :submit, :class => 'btn-primary'
+    = link_to t('.cancel', :default => t("helpers.links.cancel")), collection_path(@picture.collection), :class => 'btn btn-default'
