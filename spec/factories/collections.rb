@@ -1,7 +1,10 @@
 FactoryGirl.define do
   factory :collection do
-    name "MyString"
-user nil
+    name { Faker::Lorem.word }
+  end
+
+  factory :invalid_collection do
+    name ''
   end
 
 end
