@@ -32,7 +32,7 @@ RSpec.describe CollectionsController, type: :controller do
   }
 
   let(:invalid_attributes) {
-    skip("Add a hash of attributes invalid for your model")
+    FactoryGirl.attributes_for :invalid_collection
   }
 
   # This should return the minimal set of values that should be in the session
@@ -112,14 +112,14 @@ RSpec.describe CollectionsController, type: :controller do
     describe "PUT #update" do
       context "with valid params" do
         let(:new_attributes) {
-          skip("Add a hash of attributes valid for your model")
+          FactoryGirl.attributes_for :collection
         }
 
         it "updates the requested collection" do
           collection = Collection.create! valid_attributes
           put :update, {:id => collection.to_param, :collection => new_attributes}, valid_session
           collection.reload
-          skip("Add assertions for updated state")
+          expect(collection.name).to eq new_attributes[:name]
         end
 
         it "assigns the requested collection as @collection" do
