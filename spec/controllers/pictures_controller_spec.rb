@@ -28,8 +28,8 @@ RSpec.describe PicturesController, type: :controller do
   # let(:valid_attributes) {
   #   {
   #       collection_id: @user.collections[0].id,
-  #       # image: Rack::Test::UploadedFile.new(Rails.root.join("spec", "support", "test_image.jpg"))
-  #       image: fixture_file_upload('/files/test_image.jpg')
+  #       image: Rack::Test::UploadedFile.new(Rails.root.join("spec", "support", "test_image.jpg"),'image/jpg')
+  #       # image: fixture_file_upload('/files/test_image.jpg')
   #   }
   # }
 
@@ -70,7 +70,7 @@ RSpec.describe PicturesController, type: :controller do
       context "with valid params" do
         it "creates a new Picture" do
           expect {
-            post :create, {:picture => valid_attributes}, valid_session
+            post :create, :picture => valid_attributes
           }.to change(Picture, :count).by(1)
         end
 
