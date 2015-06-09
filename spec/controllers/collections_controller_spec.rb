@@ -234,7 +234,7 @@ RSpec.describe CollectionsController, type: :controller do
     end
 
     describe "DELETE #destroy" do
-      it "redirects to the collections list" do
+      it "redirects to new_user_session_path" do
         collection = Collection.create! valid_attributes
         delete :destroy, {:id => collection.to_param}, valid_session
         expect(response).to redirect_to(new_user_session_path)

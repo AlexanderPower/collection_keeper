@@ -1,5 +1,5 @@
 Rails.application.routes.draw do
-  resources :links
+  resources :links, except: [:index, :show]
   resources :collections
   resources :pictures
   devise_for :users

@@ -5,17 +5,6 @@ class LinksController < ApplicationController
 
   load_and_authorize_resource
 
-  # GET /links
-  # GET /links.json
-  def index
-    @links = Link.all
-  end
-
-  # GET /links/1
-  # GET /links/1.json
-  def show
-  end
-
   # GET /links/new
   def new
     collection=Collection.find params[:collection_id]
