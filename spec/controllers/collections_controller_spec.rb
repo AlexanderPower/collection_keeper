@@ -166,4 +166,80 @@ RSpec.describe CollectionsController, type: :controller do
     end
   end
 
+  describe 'guest access' do
+
+    describe "GET #index" do
+      it "assigns all collections as nil" do
+        collection = Collection.create! valid_attributes
+        get :index, {}, valid_session
+        expect(assigns(:collections)).to eq []
+      end
+    end
+
+    describe "GET #show" do
+      context "Unshared collection" do
+        it "assigns all collections as nil" do
+          collection = Collection.create! valid_attributes
+          get :show, {:id => collection.to_param}, valid_session
+          expect(assigns(:collections)).to eq nil
+        end
+        it "redirect to root path" do
+          collection = Collection.create! valid_attributes
+          get :show, {:id => collection.to_param}, valid_session
+          expect(response).to redirect_to root_path
+        end
+      end
+      context "Shared collection" do
+        it "assigns the requested collection as @collection" do
+          collection = FactoryGirl.create :shared_collection
+          get :show, {:id => collection.to_param}, valid_session
+          expect(assigns(:collection)).to eq(collection)
+        end
+      end
+    end
+
+    describe "GET #new" do
+      it "assigns a new collection as nil" do
+        get :new, {}, valid_session
+        expect(assigns(:collection)).to eq nil
+      end
+      it "redirect to new_user_session_path" do
+        collection = Collection.create! valid_attributes
+        get :new, {:id => collection.to_param}, valid_session
+        expect(response).to redirect_to new_user_session_path
+      end
+    end
+
+    describe "GET #edit" do
+      it "redirect to new_user_session_path" do
+        collection = Collection.create! valid_attributes
+        get :edit, {:id => collection.to_param}, valid_session
+        expect(response).to redirect_to new_user_session_path
+      end
+    end
+
+    describe "POST #create" do
+      it "redirects to new_user_session_path" do
+        post :create, {:collection => valid_attributes}, valid_session
+        expect(response).to redirect_to new_user_session_path
+      end
+    end
+
+    describe "PUT #update" do
+      it "redirects to new_user_session_path" do
+        collection = Collection.create! valid_attributes
+        put :update, {:id => collection.to_param, :collection => valid_attributes}, valid_session
+        expect(response).to redirect_to(new_user_session_path)
+      end
+    end
+
+    describe "DELETE #destroy" do
+      it "redirects to the collections list" do
+        collection = Collection.create! valid_attributes
+        delete :destroy, {:id => collection.to_param}, valid_session
+        expect(response).to redirect_to(new_user_session_path)
+      end
+    end
+  end
+
 end
