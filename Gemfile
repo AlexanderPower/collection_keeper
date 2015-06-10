@@ -34,7 +34,7 @@ gem 'jquery-turbolinks'
 
 # Files upload
 gem 'paperclip', '~> 4.2'
-gem 'aws-sdk'
+gem 'aws-sdk', '< 2.0'
 
 group :development do
   gem 'erb2haml'
