@@ -34,6 +34,7 @@ gem 'jquery-turbolinks'
 
 # Files upload
 gem 'paperclip', '~> 4.2'
+gem 'aws-sdk'
 
 group :development do
   gem 'erb2haml'
@@ -43,6 +44,7 @@ end
 group :test do
   gem 'faker'
   gem 'database_cleaner'
+  gem 'capybara'
 end
 
 group :development, :test do
