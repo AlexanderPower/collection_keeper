@@ -25,17 +25,17 @@ RSpec.describe PicturesController, type: :controller do
     @user.collections.create FactoryGirl.attributes_for :collection
   end
 
-  # let(:valid_attributes) {
-  #   {
-  #       collection_id: @user.collections[0].id,
-  #       image: Rack::Test::UploadedFile.new(Rails.root.join("spec", "support", "test_image.jpg"),'image/jpg')
-  #       # image: fixture_file_upload('/files/test_image.jpg')
-  #   }
-  # }
-
   let(:valid_attributes) {
-    @user.collections[0].pictures.build(FactoryGirl.attributes_for :picture).attributes
+    {
+        collection_id: @user.collections[0].id,
+        image: Rack::Test::UploadedFile.new(Rails.root.join("spec", "support", "test_image.jpg"), 'image/jpg')
+        # image: fixture_file_upload('/files/test_image.jpg')
+    }
   }
+
+  # let(:valid_attributes) {
+  #   @user.collections[0].pictures.build(FactoryGirl.attributes_for :picture).attributes
+  # }
 
   let(:invalid_attributes) {
     {image: nil}
@@ -86,59 +86,59 @@ RSpec.describe PicturesController, type: :controller do
         end
       end
 
-      # context "with invalid params" do
-      #   it "assigns a newly created but unsaved picture as @picture" do
-      #     post :create, {:picture => invalid_attributes}, valid_session
-      #     expect(assigns(:picture)).to be_a_new(Picture)
-      #   end
-      #
-      #   it "re-renders the 'new' template" do
-      #     post :create, {:picture => invalid_attributes}, valid_session
-      #     expect(response).to render_template("new")
-      #   end
-      # end
-    end
-
-    describe "PUT #update" do
-      context "with valid params" do
-        let(:new_attributes) {
-          skip("Add a hash of attributes valid for your model")
-        }
-
-        it "updates the requested picture" do
-          picture = Picture.create! valid_attributes
-          put :update, {:id => picture.to_param, :picture => new_attributes}, valid_session
-          picture.reload
-          skip("Add assertions for updated state")
-        end
-
-        it "assigns the requested picture as @picture" do
-          picture = Picture.create! valid_attributes
-          put :update, {:id => picture.to_param, :picture => valid_attributes}, valid_session
-          expect(assigns(:picture)).to eq(picture)
-        end
-
-        it "redirects to the picture" do
-          picture = Picture.create! valid_attributes
-          put :update, {:id => picture.to_param, :picture => valid_attributes}, valid_session
-          expect(response).to redirect_to(picture)
-        end
-      end
-
       context "with invalid params" do
-        it "assigns the picture as @picture" do
-          picture = Picture.create! valid_attributes
-          put :update, {:id => picture.to_param, :picture => invalid_attributes}, valid_session
-          expect(assigns(:picture)).to eq(picture)
+        it "assigns a newly created but unsaved picture as @picture" do
+          post :create, {:picture => invalid_attributes}, valid_session
+          expect(assigns(:picture)).to be_a_new(Picture)
         end
 
-        it "re-renders the 'edit' template" do
-          picture = Picture.create! valid_attributes
-          put :update, {:id => picture.to_param, :picture => invalid_attributes}, valid_session
-          expect(response).to render_template("edit")
+        it "re-renders the 'new' template" do
+          post :create, {:picture => invalid_attributes}, valid_session
+          expect(response).to render_template("new")
         end
       end
     end
+
+    # describe "PUT #update" do
+    #   context "with valid params" do
+    #     let(:new_attributes) {
+    #       skip("Add a hash of attributes valid for your model")
+    #     }
+    #
+    #     it "updates the requested picture" do
+    #       picture = Picture.create! valid_attributes
+    #       put :update, {:id => picture.to_param, :picture => new_attributes}, valid_session
+    #       picture.reload
+    #       skip("Add assertions for updated state")
+    #     end
+    #
+    #     it "assigns the requested picture as @picture" do
+    #       picture = Picture.create! valid_attributes
+    #       put :update, {:id => picture.to_param, :picture => valid_attributes}, valid_session
+    #       expect(assigns(:picture)).to eq(picture)
+    #     end
+    #
+    #     it "redirects to the picture" do
+    #       picture = Picture.create! valid_attributes
+    #       put :update, {:id => picture.to_param, :picture => valid_attributes}, valid_session
+    #       expect(response).to redirect_to(picture)
+    #     end
+    #   end
+    #
+    #   context "with invalid params" do
+    #     it "assigns the picture as @picture" do
+    #       picture = Picture.create! valid_attributes
+    #       put :update, {:id => picture.to_param, :picture => invalid_attributes}, valid_session
+    #       expect(assigns(:picture)).to eq(picture)
+    #     end
+    #
+    #     it "re-renders the 'edit' template" do
+    #       picture = Picture.create! valid_attributes
+    #       put :update, {:id => picture.to_param, :picture => invalid_attributes}, valid_session
+    #       expect(response).to render_template("edit")
+    #     end
+    #   end
+    # end
 
     describe "DELETE #destroy" do
       it "destroys the requested picture" do
@@ -151,7 +151,81 @@ RSpec.describe PicturesController, type: :controller do
       it "redirects to the pictures list" do
         picture = Picture.create! valid_attributes
         delete :destroy, {:id => picture.to_param}, valid_session
-        expect(response).to redirect_to(pictures_url)
+        expect(response).to redirect_to(@user.collections[0])
+      end
+    end
+  end
+
+  describe 'guest access' do
+
+    describe "GET #new" do
+      it "assigns a new picture as nil" do
+        get :new, {collection_id: @user.collections[0]}, valid_session
+        expect(assigns(:picture)).to eq nil
+      end
+    end
+
+    describe "GET #edit" do
+      it "redirect to new_user_session_path" do
+        picture = Picture.create! valid_attributes
+        get :edit, {:id => picture.to_param}, valid_session
+        expect(response).to redirect_to new_user_session_path
+      end
+    end
+
+    describe "POST #create" do
+      it "redirects to new_user_session_path" do
+        post :create, {:picture => valid_attributes}, valid_session
+        expect(response).to redirect_to new_user_session_path
+      end
+    end
+
+    # describe "PUT #update" do
+    #   context "with valid params" do
+    #     let(:new_attributes) {
+    #       skip("Add a hash of attributes valid for your model")
+    #     }
+    #
+    #     it "updates the requested picture" do
+    #       picture = Picture.create! valid_attributes
+    #       put :update, {:id => picture.to_param, :picture => new_attributes}, valid_session
+    #       picture.reload
+    #       skip("Add assertions for updated state")
+    #     end
+    #
+    #     it "assigns the requested picture as @picture" do
+    #       picture = Picture.create! valid_attributes
+    #       put :update, {:id => picture.to_param, :picture => valid_attributes}, valid_session
+    #       expect(assigns(:picture)).to eq(picture)
+    #     end
+    #
+    #     it "redirects to the picture" do
+    #       picture = Picture.create! valid_attributes
+    #       put :update, {:id => picture.to_param, :picture => valid_attributes}, valid_session
+    #       expect(response).to redirect_to(picture)
+    #     end
+    #   end
+    #
+    #   context "with invalid params" do
+    #     it "assigns the picture as @picture" do
+    #       picture = Picture.create! valid_attributes
+    #       put :update, {:id => picture.to_param, :picture => invalid_attributes}, valid_session
+    #       expect(assigns(:picture)).to eq(picture)
+    #     end
+    #
+    #     it "re-renders the 'edit' template" do
+    #       picture = Picture.create! valid_attributes
+    #       put :update, {:id => picture.to_param, :picture => invalid_attributes}, valid_session
+    #       expect(response).to render_template("edit")
+    #     end
+    #   end
+    # end
+
+    describe "DELETE #destroy" do
+      it "redirects to the new_user_session_path list" do
+        picture = Picture.create! valid_attributes
+        delete :destroy, {:id => picture.to_param}, valid_session
+        expect(response).to redirect_to(new_user_session_path)
       end
     end
   end
