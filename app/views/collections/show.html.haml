@@ -3,9 +3,9 @@
   %h1= @collection.name
 -if can? :manage, @collection
   -if not @collection.share
-    =link_to 'Shared',collection_path(@collection,collection:{share:true}),method: :patch, class: 'btn btn-primary pull-right'
+    =link_to 'Share',collection_path(@collection,collection:{share:true}),method: :patch, class: 'btn btn-primary pull-right'
   -else
-    =link_to 'Unshared',collection_path(@collection,collection:{share:false}),method: :patch, class: 'btn btn-default pull-right'
+    =link_to 'Unshare',collection_path(@collection,collection:{share:false}),method: :patch, class: 'btn btn-default pull-right'
 
   = link_to t('.back', :default => t("helpers.links.back")), collections_path, :class => 'btn btn-default'
   = link_to t('.edit', :default => t("helpers.links.edit")), edit_collection_path(@collection), :class => 'btn btn-default'
