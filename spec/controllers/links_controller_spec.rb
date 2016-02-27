@@ -29,7 +29,7 @@ RSpec.describe LinksController, type: :controller do
   # Link. As you add validations to Link, be sure to
   # adjust the attributes here as well.
   let(:valid_attributes) {
-    @user.collections[0].links.build(FactoryGirl.attributes_for :link).attributes
+    FactoryGirl.attributes_for :link
   }
 
   let(:invalid_attributes) {
@@ -65,30 +65,30 @@ RSpec.describe LinksController, type: :controller do
       context "with valid params" do
         it "creates a new Link" do
           expect {
-            post :create, {:link => valid_attributes}, valid_session
+            post :create, {collection_id: @user.collections.first.id, :link => valid_attributes}, valid_session
           }.to change(Link, :count).by(1)
         end
 
         it "assigns a newly created link as @link" do
-          post :create, {:link => valid_attributes}, valid_session
+          post :create, {collection_id: @user.collections.first.id, :link => valid_attributes}, valid_session
           expect(assigns(:link)).to be_a(Link)
           expect(assigns(:link)).to be_persisted
         end
 
         it "redirects to the user.collection" do
-          post :create, {:link => valid_attributes}, valid_session
+          post :create, {collection_id: @user.collections.first.id, :link => valid_attributes}, valid_session
           expect(response).to redirect_to(@user.collections[0])
         end
       end
 
       context "with invalid params" do
         it "assigns a newly created but unsaved link as @link" do
-          post :create, {:link => invalid_attributes}, valid_session
+          post :create, {collection_id: @user.collections.first.id, :link => invalid_attributes}, valid_session
           expect(assigns(:link)).to be_a_new(Link)
         end
 
         it "re-renders the 'new' template" do
-          post :create, {:link => invalid_attributes}, valid_session
+          post :create, {collection_id: @user.collections.first.id, :link => invalid_attributes}, valid_session
           expect(response).to render_template("new")
         end
       end
@@ -101,20 +101,20 @@ RSpec.describe LinksController, type: :controller do
         }
 
         it "updates the requested link" do
-          link = Link.create! valid_attributes
-          put :update, {:id => link.to_param, :link => new_attributes}, valid_session
+          link = Link.create! valid_attributes.merge(collection_id: @user.collections.first.id)
+          put :update, {:id => link.id, :link => new_attributes}, valid_session
           link.reload
           expect(link.text).to eq new_attributes[:text]
         end
 
         it "assigns the requested link as @link" do
-          link = Link.create! valid_attributes
+          link = Link.create! valid_attributes.merge(collection_id: @user.collections.first.id)
           put :update, {:id => link.to_param, :link => valid_attributes}, valid_session
           expect(assigns(:link)).to eq(link)
         end
 
         it "redirects to the user.collection" do
-          link = Link.create! valid_attributes
+          link = Link.create! valid_attributes.merge(collection_id: @user.collections.first.id)
           put :update, {:id => link.to_param, :link => valid_attributes}, valid_session
           expect(response).to redirect_to(@user.collections[0])
         end
@@ -122,13 +122,13 @@ RSpec.describe LinksController, type: :controller do
 
       context "with invalid params" do
         it "assigns the link as @link" do
-          link = Link.create! valid_attributes
+          link = Link.create! valid_attributes.merge(collection_id: @user.collections.first.id)
           put :update, {:id => link.to_param, :link => invalid_attributes}, valid_session
           expect(assigns(:link)).to eq(link)
         end
 
         it "re-renders the 'edit' template" do
-          link = Link.create! valid_attributes
+          link = Link.create! valid_attributes.merge(collection_id: @user.collections.first.id)
           put :update, {:id => link.to_param, :link => invalid_attributes}, valid_session
           expect(response).to render_template("edit")
         end
@@ -137,14 +137,14 @@ RSpec.describe LinksController, type: :controller do
 
     describe "DELETE #destroy" do
       it "destroys the requested link" do
-        link = Link.create! valid_attributes
+        link = Link.create! valid_attributes.merge(collection_id: @user.collections.first.id)
         expect {
           delete :destroy, {:id => link.to_param}, valid_session
         }.to change(Link, :count).by(-1)
       end
 
       it "redirects to the user.collection" do
-        link = Link.create! valid_attributes
+        link = Link.create! valid_attributes.merge(collection_id: @user.collections.first.id)
         delete :destroy, {:id => link.to_param}, valid_session
         expect(response).to redirect_to(@user.collections[0])
       end
@@ -170,7 +170,7 @@ RSpec.describe LinksController, type: :controller do
 
     describe "POST #create" do
       it "redirects to new_user_session_path" do
-        post :create, {:link => valid_attributes}, valid_session
+        post :create, {collection_id: @user.collections.first.id, :link => valid_attributes}, valid_session
         expect(response).to redirect_to new_user_session_path
       end
     end

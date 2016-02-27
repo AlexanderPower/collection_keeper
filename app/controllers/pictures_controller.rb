@@ -1,34 +1,21 @@
 class PicturesController < ApplicationController
-  before_action :set_picture, only: [:show, :edit, :update, :destroy]
-  before_action :authenticate_user!, except: [:index, :show]
+  before_action :set_picture, only: [:destroy]
+  before_action :set_collection, only: [:new, :create]
 
-  load_and_authorize_resource
+  before_action :authenticate_user!
 
-  # GET /pictures
-  # GET /pictures.json
-  def index
-    @pictures = Picture.all
-  end
-
-  # GET /pictures/1
-  # GET /pictures/1.json
-  def show
-  end
+  load_and_authorize_resource :collection
+  load_and_authorize_resource :picture, :through => :collection
 
   # GET /pictures/new
   def new
-    collection=Collection.find params[:collection_id]
-    @picture = collection.pictures.build
-  end
-
-  # GET /pictures/1/edit
-  def edit
+    @picture = @collection.pictures.build
   end
 
   # POST /pictures
   # POST /pictures.json
   def create
-    @picture = Picture.new(picture_params)
+    @picture = @collection.pictures.build(picture_params)
 
     respond_to do |format|
       if @picture.save
@@ -36,20 +23,6 @@ class PicturesController < ApplicationController
         format.json { render :show, status: :created, location: @picture }
       else
         format.html { render :new }
-        format.json { render json: @picture.errors, status: :unprocessable_entity }
-      end
-    end
-  end
-
-  # PATCH/PUT /pictures/1
-  # PATCH/PUT /pictures/1.json
-  def update
-    respond_to do |format|
-      if @picture.update(picture_params)
-        format.html { redirect_to @picture.collection, notice: 'Picture was successfully updated.' }
-        format.json { render :show, status: :ok, location: @picture }
-      else
-        format.html { render :edit }
         format.json { render json: @picture.errors, status: :unprocessable_entity }
       end
     end
@@ -73,6 +46,10 @@ class PicturesController < ApplicationController
 
     # Never trust parameters from the scary internet, only allow the white list through.
     def picture_params
-      params.require(:picture).permit(:image,:name,:collection_id)
+      params.require(:picture).permit(:image) if params[:picture]
+    end
+
+    def set_collection
+      @collection = Collection.find params[:collection_id]
     end
 end

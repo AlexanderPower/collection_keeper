@@ -1,5 +1,4 @@
 = simple_form_for @collection, :html => { :class => 'form-horizontal' } do |f|
   = f.input :name
-  = f.hidden_field :user_id
   = f.button :submit, :class => 'btn-primary'
   = link_to t('.cancel', :default => t("helpers.links.cancel")), @collection, :class => 'btn btn-default'

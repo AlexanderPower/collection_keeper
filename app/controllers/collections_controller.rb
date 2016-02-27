@@ -19,11 +19,12 @@ class CollectionsController < ApplicationController
   def show
     authenticate_user! unless @collection.share
     @show_modal=flash[:show_modal]
+    # @new_link = @collection.links.build
   end
 
   # GET /collections/new
   def new
-    @collection = current_user.collections.build
+    @collection = Collection.new
   end
 
   # GET /collections/1/edit
@@ -33,7 +34,7 @@ class CollectionsController < ApplicationController
   # POST /collections
   # POST /collections.json
   def create
-    @collection = Collection.new(collection_params)
+    @collection = Collection.new(collection_params.merge user_id: current_user.id)
 
     respond_to do |format|
       if @collection.save
@@ -86,6 +87,6 @@ class CollectionsController < ApplicationController
 
   # Never trust parameters from the scary internet, only allow the white list through.
   def collection_params
-    params.require(:collection).permit(:name, :user_id, :share)
+    params.require(:collection).permit(:name, :share)
   end
 end

@@ -33,11 +33,9 @@
             = link_to t('.edit', :default => t("helpers.links.edit")), edit_link_path(link), :class => 'btn btn-default btn-xs'
             = link_to t('.destroy', :default => t("helpers.links.destroy")), link_path(link), :method => :delete, :data => { :confirm => t('.confirm', :default => t("helpers.links.confirm", :default => 'Are you sure?')) }, :class => 'btn btn-xs btn-danger'
 -if can? :manage, @collection
-  = link_to 'New link', new_link_path(collection_id:@collection), :class => 'btn btn-primary'
+  = link_to 'New link', new_collection_link_path(@collection), :class => 'btn btn-primary'
 %hr
 
--#= simple_form_for @picture, url: pictures_path do |form|
--#  = form.input :avatar, as: :file
 %h3 Pictures
 .row
   -@collection.pictures.each do |picture|
@@ -47,4 +45,4 @@
       = link_to (image_tag picture.image.url(:medium),class: 'img-responsive'), picture.image.url(:original) , :target => "_blank"
 
 -if can? :manage, @collection
-  = link_to 'New picture', new_picture_path(collection_id:@collection), :class => 'btn btn-primary'
+  = link_to 'New picture', new_collection_picture_path(@collection), :class => 'btn btn-primary'

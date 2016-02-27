@@ -1,9 +1,8 @@
-= simple_form_for(@link) do |f|
+= simple_form_for([@collection, @link]) do |f|
   = f.error_notification
 
   .form-inputs
     = f.input :text
-    = f.hidden_field :collection_id
 
   .form-actions
     = f.button :submit, :class => 'btn-primary'

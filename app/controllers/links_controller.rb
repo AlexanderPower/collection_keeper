@@ -1,14 +1,15 @@
 class LinksController < ApplicationController
-  before_action :set_link, only: [:show, :edit, :update, :destroy]
+  before_action :set_link, only: [:edit, :update, :destroy]
+  before_action :set_collection, only: [:new, :create]
 
   before_action :authenticate_user!
 
-  load_and_authorize_resource
+  load_and_authorize_resource :collection
+  load_and_authorize_resource :link, :through => :collection
 
   # GET /links/new
   def new
-    collection=Collection.find params[:collection_id]
-    @link = collection.links.build
+    @link = @collection.links.build
   end
 
   # GET /links/1/edit
@@ -18,7 +19,7 @@ class LinksController < ApplicationController
   # POST /links
   # POST /links.json
   def create
-    @link = Link.new(link_params)
+    @link = @collection.links.build(link_params)
 
     respond_to do |format|
       if @link.save
@@ -63,6 +64,10 @@ class LinksController < ApplicationController
 
     # Never trust parameters from the scary internet, only allow the white list through.
     def link_params
-      params.require(:link).permit(:text, :collection_id)
+      params.require(:link).permit(:text)
+    end
+
+    def set_collection
+      @collection = Collection.find params[:collection_id]
     end
 end
